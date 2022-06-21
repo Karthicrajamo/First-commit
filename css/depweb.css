@@ -1,0 +1,39 @@
+.box {
+
+    overflow: hidden;
+    text-decoration: none;
+    background-color: yellowgreen;
+    transition-property: background-color;
+}
+
+.box:hover {
+    background-color: #008672;
+
+}
+
+.header {
+    background-color: #f1f1f1;
+    padding: 30px;
+    text-align: center;
+}
+
+#navbar {
+    overflow: hidden;
+    background-color: #333;
+}
+
+#navbar a {
+    float: left;
+
+    color: #f2f2f2;
+
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+}
+
+.sticky {
+    position: fixed;
+    top: 0;
+    width: 100%;
+}
