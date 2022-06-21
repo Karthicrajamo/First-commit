@@ -77,6 +77,8 @@ class user
             return $this->_get_data($property);
         } elseif (substr($name, 0, 3)=="set") {
             return $this->_set_data($property, $arguments[0]);
+        } else {
+            throw new Exception("user::__call->$name,function unavailable");
         }
     }
     private function _set_data($var, $data)
