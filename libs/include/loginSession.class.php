@@ -25,11 +25,17 @@ class UserSession
             print($browser."<br>");
             $token=md5(rand(0, 9999999).$ip.$browser.time());
             $sql="INSERT INTO `session`(`Uid`, `token`, `Ip`, `browser_name`, `active`, `time`) VALUES ('5','$token','$ip','$browser',1,now())";
-            if ($conn->query($sql));
-            {
-                print  $token."<br>";
+            if ($conn->query($sql)) {
+                Session::set('session_token', $token);
+                print("$token");
                 return $token;
-           }
+            } else {
+                return false;
+            }
         }
+    }
+    public static function authorization($token)
+    {
+        print("token:".$token);
     }
 }

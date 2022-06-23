@@ -1,21 +1,15 @@
 <?php
-class test
-{
-    public $add=null;
-    private $p=20;
-    public function __construct()
-    {
-        printf('open'); ?>
-<br><?php
+include '../libs/load.php';
+$user='haikarthicraja4@gmail.com';
+$pass="87654321";
+if (session::get('session_token')) {
+    if (UserSession::authorization(session::get("session_token"))) {
+        print("Login");
     }
-    public function sample($new)
-    {
-        // print($add);
-        // echo 'test::$add';
-        return $this->add=$new;
-    }
-    public function pub()
-    {
-        return $this->p;
+} else {
+    print(UserSession::authenticate($user, $pass));
+    if (UserSession::authenticate($user, $pass)) {
+        print("login success,Welcome".$user."<br>");
+        session::set("loggedin", true);
     }
 }
