@@ -32,7 +32,9 @@ function check()
         $userobj=new user($userdata);
         $userobj->setbio('Hai I Am Karthic');
         $userobj->getbio();
-        $userobj->hiii();
+        $ses=new UserSession(5);
+        $ses->authenticate('haikarthicraja4@gmail.com', 87654321);
+        // $userobj->hiii();
         // print("hai");
         // print("Welcome back,$userdata");
         print("welcome back,".session::get('session_user'));

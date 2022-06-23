@@ -2,6 +2,7 @@
 include_once 'include/database.class.php';
 include_once 'include/user.class.php';
 include_once 'include/sessions.class.php';
+include_once 'include/loginSession.class.php';
 
 global $__site_config;
 $__site_config = file_get_contents($_SERVER['DOCUMENT_ROOT'].'/../Db_service.json');

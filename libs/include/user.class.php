@@ -37,6 +37,9 @@ class user
             $hash=$row['pass'];
             if (password_verify($pass, $hash) and ($email===$row['email'])) {
                 // if ($row['pass']==$pass) {
+                // Generator Session Token
+                // Insert Session Token in SQL
+                // Build Session and give session to User
                 return $row;
             }
         } else {
