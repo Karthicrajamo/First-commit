@@ -1,17 +1,25 @@
 <?php
 class UserSession
 {
-    public function __construct($Id)
+    public $data=0;
+    public $token=0;
+    public $Uid=0;
+    public function __construct($token)
     {
         $this->conn=database::con();
-        $this->Id=$Id;
+        $this->token=$token;
         $this->data=null;
-        $sql="SELECT * FROM `session` WHERE `Id`='$this->Id'";
+        $sql="SELECT * FROM `session` WHERE `token`='$token'";
         $result=$this->conn->query($sql);
+        
         if ($result->num_rows) {
+            print"$token";
             $row=$result->fetch_assoc();
             $this->data=$row;
+            print "<br>".$this->data['Uid']."<br>";
             $this->Uid=$row['Uid'];
+        } else {
+            print"<br>No row inserted<br>";
         }
     }
     public static function authenticate($email, $pass)
@@ -36,6 +44,32 @@ class UserSession
     }
     public static function authorization($token)
     {
-        print("token:".$token);
+        $username=new UserSession($token);
+        print("token:".$token."<br>");
+        print(time());
+        print "hai";
+        $username->login_time();
+        // print($username->$this->data["IP"]);
+    }
+    public function login_time()
+    {
+        // $time=new UserSession($this->Uid);
+        print "<br>".$this->data["time"];
+        // echo(time()-$this->data['time']);
+        if (isset($this->data['token'])) {
+            if (time()-$this->data['time']) {
+                print"<br>time";
+            }
+        }
+    }
+    // public function getUser()
+    // {
+    //     // $get=new UserSession($this->Uid);
+    //     print($this->data["browser_name"]);
+    //     print "hai";
+    // }
+    public function getIP()
+    {
+        return isset($this->data["Ip"]) ? $this->data["Ip"] : false;
     }
 }
