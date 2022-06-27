@@ -13,10 +13,10 @@ class UserSession
         $result=$this->conn->query($sql);
         
         if ($result->num_rows) {
-            print"$token";
+            // print"$token";
             $row=$result->fetch_assoc();
             $this->data=$row;
-            print "<br>".$this->data['Uid']."<br>";
+            // print "<br>".$this->data['Uid']."<br>";
             $this->Uid=$row['Uid'];
         } else {
             print"<br>No row inserted<br>";
@@ -29,13 +29,14 @@ class UserSession
             // $Uid=$this->Uid;
             $conn=database::con();
             $ip=$_SERVER['REMOTE_ADDR'];
+            // print "<br>ip:".$ip."<br>";
             $browser=$_SERVER['HTTP_USER_AGENT'];
-            print($browser."<br>");
+            // print($browser."<br>");
             $token=md5(rand(0, 9999999).$ip.$browser.time());
             $sql="INSERT INTO `session`(`Uid`, `token`, `Ip`, `browser_name`, `active`, `time`) VALUES ('5','$token','$ip','$browser',1,now())";
             if ($conn->query($sql)) {
                 Session::set('session_token', $token);
-                print("$token");
+                // print("$token");
                 return $token;
             } else {
                 return false;
@@ -45,31 +46,55 @@ class UserSession
     public static function authorization($token)
     {
         $username=new UserSession($token);
-        print("token:".$token."<br>");
-        print(time());
-        print "hai";
+        if ($username->getIP()==$_SERVER['REMOTE_ADDR']) {
+            if ($username->login_time() and $username->IsActive()) {
+                if ($_SERVER['HTTP_USER_AGENT']==$username->Useragent()) {
+                    print"getip success";
+                } else {
+                    throw new Exception('User Agent not Match');
+                }
+            } else {
+                throw new Exception("Time expires");
+            }
+        } else {
+            throw new Exception("IP not matches");
+        }
+        // print("token:".$token."<br>");
         $username->login_time();
-        // print($username->$this->data["IP"]);
     }
     public function login_time()
     {
-        // $time=new UserSession($this->Uid);
-        print "<br>".$this->data["time"];
-        // echo(time()-$this->data['time']);
+        $login_time = DateTime::createFromFormat('Y-m-d H:i:s', $this->data['time']);
+        print "<br>".time()-$login_time->getTimestamp()."<br>";
         if (isset($this->data['token'])) {
-            if (time()-$this->data['time']) {
-                print"<br>time";
+            if (1000 > time()-$login_time->getTimestamp()) {
+                return true;
+            } else {
+                throw new Exception('No login_time found');
             }
+        } else {
+            throw new Exception('Token does not valid in Login_time()');
         }
     }
-    // public function getUser()
-    // {
-    //     // $get=new UserSession($this->Uid);
-    //     print($this->data["browser_name"]);
-    //     print "hai";
-    // }
+    public function Useragent()
+    {
+        return isset($this->data['browser_name']) ? $this->data['browser_name'] : false;
+    }
     public function getIP()
     {
+        // print "<br>".$this->data['Ip'];
         return isset($this->data["Ip"]) ? $this->data["Ip"] : false;
+    }
+    public function deactivate()
+    {
+        if ($this->conn) {
+            $conn=database::con();
+        }
+        $sql="UPDATE `session` SET `active`='0' WHERE 'Uid'=$this->Uid";
+        return $result=$conn->query($sql) ? true : false;
+    }
+    public function IsActive()
+    {
+        return isset($this->data['active']) ? true : false;
     }
 }
