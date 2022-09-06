@@ -1,0 +1,27 @@
+
+
+.logo img{
+    width: 500px;
+    float:left;
+    padding: 10px 500px 10px 10px;
+    
+    background-color: yellowgreen;
+}
+#logo1 img{
+    width: 130px;
+    background: yellowgreen;
+    padding: 30px 40px 49px 44px;
+    float:right;
+}
+#pp1 img, #pp2 img, #pp3 img, #pp4 img{
+    background-color: slategray;
+    width:120px;
+    padding: 50px;
+    margin-top: 30px;
+    margin-left: 30px;
+    border-radius: 10px;
+    float:left
+}
+body{
+    background-color: teal;
+}

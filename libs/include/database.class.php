@@ -22,7 +22,7 @@ class database
                 // print_r($connect);
                 return database::$conn;
             }
-            //echo "$conn->connect_error";
+        //echo "$conn->connect_error";
         } else {
             // echo "connected";
             return database::$conn;
